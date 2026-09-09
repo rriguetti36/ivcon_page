@@ -1,0 +1,30 @@
+---
+import empresa from '../data/empresa.json';
+import { asset } from '../lib/media';
+import '../styles/global.css';
+const { title, description, noindex = false } = Astro.props;
+const domain = empresa.dominio.replace(/\/$/, '');
+const canonical = domain ? `${domain}${Astro.url.pathname}` : null;
+const logo = asset(['logo-recortado.png', 'logo.png']);
+const schema = {'@context':'https://schema.org','@type': empresa.direccion ? 'GeneralContractor' : 'Organization', name:empresa.nombre, description:'Impermeabilización de techos, azoteas y terrazas en Lima y Perú.', areaServed:{'@type':'Country',name:'Perú'}, ...(domain ? {url:domain} : {}), ...(empresa.telefono ? {telephone:empresa.telefono} : {}), ...(empresa.correo ? {email:empresa.correo} : {}), ...(empresa.direccion ? {address:{'@type':'PostalAddress',streetAddress:empresa.direccion,addressCountry:'PE'}} : {}), ...(empresa.googleMaps ? {sameAs:[empresa.googleMaps]} : {}), ...(logo && domain ? {logo:domain+logo} : {})};
+---
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title><meta name="description" content={description} />
+    <meta name="robots" content={noindex || !domain ? 'noindex, follow' : 'index, follow'} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:type" content="website" /><meta property="og:locale" content="es_PE" /><meta property="og:site_name" content="IVCON EIRL" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="theme-color" content="#122628" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')} />
+  </head>
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <div class="topbar"><div class="container"><span>IMPERMEABILIZACIÓN ESPECIALIZADA</span><span>Lima · Sierra · Selva · Todo el Perú ↗</span></div></div>
+    <header><div class="container nav"><a class="brand header-brand" href="/" aria-label="IVCON inicio">{logo ? <img src={logo} alt="IVCON" width="240" height="84" /> : <span>IVCON<span class="brand-dot">.</span></span>}<small>INGENIERÍA QUE PROTEGE</small></a><nav aria-label="Principal"><a href="/#servicios">Soluciones</a><a href="/#sistemas">Sistemas</a><a href="/#proyectos">Proyectos</a><a href="/#cobertura">Cobertura</a></nav><a class="button small" href="/#contacto">Evaluar mi proyecto <span>↗</span></a></div></header>
+    <main id="contenido"><slot /></main>
+    <footer><div class="container footer-grid"><div><a class="brand light" href="/">IVCON<span class="brand-dot">.</span></a><p>Impermeabilización de techos en Lima y Perú.<br />Protección que empieza con una buena evaluación.</p></div><div><strong>Conversemos sobre tu proyecto</strong><p>{empresa.nombre}<br />{empresa.zona}</p>{empresa.telefono && <a href={`tel:${empresa.telefono.replace(/\s/g,'')}`}>{empresa.telefono}</a>}{empresa.correo && <a href={`mailto:${empresa.correo}`}>{empresa.correo}</a>}</div><div><strong>Encuéntranos</strong>{empresa.direccion && <p>{empresa.direccion}</p>}{empresa.horarios && <p>{empresa.horarios}</p>}{empresa.googleMaps && <a href={empresa.googleMaps} target="_blank" rel="noopener noreferrer">Ver en Google Maps ↗</a>}<a href="/#contacto">Solicitar evaluación ↗</a></div></div><div class="container copyright">© {new Date().getFullYear()} IVCON EIRL. Todos los derechos reservados.<span>Hecho para proteger lo que construyes.</span></div></footer>
+  </body>
+</html>

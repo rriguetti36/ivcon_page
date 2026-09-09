@@ -1,0 +1,9 @@
+[
+  {"slug":"linea-2-metro-lima","nombre":"Línea 2 del Metro de Lima","ubicacion":"Lima, Perú","sector":"Infraestructura","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false},
+  {"slug":"hospital-chupaca-junin","nombre":"Hospital de Chupaca","ubicacion":"Chupaca, Junín, Perú","sector":"Salud","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false},
+  {"slug":"edificio-las-olas-ancon","nombre":"Edificio Las Olas de Ancón","ubicacion":"Ancón, Lima, Perú","sector":"Residencial","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false},
+  {"slug":"centro-salud-palmira","nombre":"Centro de Salud Palmira","ubicacion":"Perú","sector":"Salud","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false},
+  {"slug":"hospital-sisa-san-martin","nombre":"Hospital de Sisa","ubicacion":"San Martín, Perú","sector":"Salud","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false},
+  {"slug":"universidad-santa-chimbote","nombre":"Universidad del Santa","ubicacion":"Chimbote, Áncash, Perú","sector":"Educación","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false},
+  {"slug":"paisajismo-ivcon","nombre":"Paisajismo IVCON","ubicacion":"Perú","sector":"Paisajismo","problema":"","solucion":"","sistema":"","superficie":"","resultado":"","publicarSEO":false}
+]
