@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import ServiceLinks from '../../components/ServiceLinks.astro';
+const breadcrumbs = [{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }];
+---
+<Layout title="Proyectos de IVCON en Lima y Regiones del Perú" description="Conoce los proyectos de IVCON en infraestructura, salud, educación, vivienda y paisajismo: Metro de Lima, Chupaca, Ancón, San Martín y Chimbote." breadcrumbs={breadcrumbs}>
+  <section class="project-hero"><div class="container"><Breadcrumbs items={breadcrumbs} /><div class="eyebrow">EXPERIENCIA EN CAMPO</div><h1>Proyectos de IVCON en el Perú</h1><p class="intro-copy">Nuestra experiencia reúne obras de infraestructura, salud, educación y vivienda en distintas regiones del país, además de la línea de paisajismo. Explora cada ficha para conocer la ubicación y la información disponible.</p></div></section>
+  <section class="section container"><ProjectGrid headingLevel={2} /><div class="related-content"><h2>Soluciones para tu próximo proyecto</h2><ServiceLinks /></div><div class="project-cta"><div><h2>Evaluemos tu obra</h2><p>Cuéntanos qué superficie necesitas proteger y dónde se encuentra.</p></div><a class="button" href="/#contacto">Solicitar evaluación ↗</a></div></section>
+</Layout>

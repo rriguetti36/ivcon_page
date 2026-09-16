@@ -1,0 +1,10 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { servicios, servicePath } from '../../data/servicios';
+const breadcrumbs = [{ name: 'Inicio', path: '/' }, { name: 'Servicios', path: '/servicios/' }];
+---
+<Layout title="Servicios de Impermeabilización en Lima y Perú | IVCON" description="Explora los servicios de IVCON: techos, azoteas, manto asfáltico, membranas líquidas, impermeabilización industrial y reparación de filtraciones." breadcrumbs={breadcrumbs}>
+  <section class="project-hero"><div class="container"><Breadcrumbs items={breadcrumbs} /><div class="eyebrow">SOLUCIONES IVCON</div><h1>Servicios de impermeabilización en Lima y Perú</h1><p class="intro-copy">Evaluamos el soporte, el uso de la superficie y la exposición antes de proponer el sistema. Conoce nuestras soluciones y la línea complementaria de paisajismo.</p></div></section>
+  <section class="section container"><div class="service-grid">{servicios.map((service, i) => <article class="service-card"><span class="card-number">{String(i + 1).padStart(2, '0')} /</span><h2>{service.nombre}</h2><p>{service.description}</p><a href={servicePath(service)}>Conocer el servicio <span>↗</span></a></article>)}</div><div class="project-cta"><div><h2>Una solución para cada obra</h2><p><a class="text-link dark" href="/proyectos/">Explorar proyectos de IVCON ↗</a></p></div><a class="button" href="/#contacto">Solicitar evaluación ↗</a></div></section>
+</Layout>

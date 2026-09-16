@@ -2,21 +2,28 @@
 import Layout from '../../layouts/Layout.astro';
 import proyectos from '../../data/proyectos.json';
 import { photos } from '../../lib/media';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ServiceLinks from '../../components/ServiceLinks.astro';
+import { projectComplete, projectIndexable, projectDescription } from '../../lib/projects';
 export function getStaticPaths() { return proyectos.map(p => ({params:{slug:p.slug},props:{project:p}})); }
 const {project:p} = Astro.props;
 const gallery=photos(p.slug);
 const fields=[['Problema',p.problema],['Solución',p.solucion],['Sistema utilizado',p.sistema],['Superficie',p.superficie],['Ubicación',p.ubicacion],['Resultado',p.resultado]];
-const complete = [p.problema,p.solucion,p.sistema,p.superficie,p.resultado].every(Boolean);
+const complete = projectComplete(p);
+const breadcrumbs = [{ name: 'Inicio', path: '/' }, { name: 'Proyectos', path: '/proyectos/' }, { name: p.nombre, path: `/proyectos/${p.slug}/` }];
+// Los servicios utilizados solo se enlazan cuando el responsable confirma sus slugs.
+const relatedServices = p.servicios || [];
 ---
-<Layout title={`${p.nombre} | Proyecto en ${p.ubicacion} | IVCON`} description={p.solucion || `Conoce el proyecto ${p.nombre} de IVCON en ${p.ubicacion}. Solicita una evaluación para tu obra.`} noindex={!p.publicarSEO || !complete}>
-  <section class="project-hero"><div class="container"><a class="text-link" href="/#proyectos">← Todos los proyectos</a><div class="eyebrow">{p.sector} / {p.ubicacion}</div><h1>{p.nombre}</h1><p>Experiencia IVCON en obra.</p></div></section>
+<Layout title={`${p.nombre} | Proyecto en ${p.ubicacion} | IVCON`} description={projectDescription(p)} noindex={!projectIndexable(p)} breadcrumbs={breadcrumbs}>
+  <section class="project-hero"><div class="container"><Breadcrumbs items={breadcrumbs} /><div class="eyebrow">{p.sector} / {p.ubicacion}</div><h1>{p.nombre}</h1><p class="intro-copy">{projectDescription(p)}</p></div></section>
   <section class="container section"><div class="case-grid">{fields.filter(([,value])=>value).map(([label,value])=><article><div class="eyebrow orange">{label}</div><p>{value}</p></article>)}</div>{!complete && <p class="project-pending">La ficha técnica de esta obra estará disponible próximamente.</p>}
-  {gallery.length > 0 && <div class="project-gallery"><h2>Fotografías del proyecto</h2><div class="gallery-grid">{gallery.map((src,i)=><a href={src} class="gallery-link" data-caption={`${p.nombre} — fotografía ${i+1}`}><img src={src} alt={`${p.nombre}, ${p.ubicacion}: fotografía ${i+1} de la obra`} loading="lazy" width="900" height="600" /></a>)}</div></div>}
+  {gallery.length > 0 && <div class="project-gallery"><h2>Fotografías del proyecto</h2><div class="gallery-grid">{gallery.map((src,i)=>{const caption = p.imagenesAlt?.[decodeURIComponent(src.split('/').pop()!)] || `${p.nombre}, ${p.ubicacion}: vista ${i+1} de la obra de IVCON`;return <a href={src} class="gallery-link" data-caption={caption}><img src={src} alt={caption} loading="lazy" decoding="async" width="900" height="600" /></a>})}</div></div>}
+  <div class="related-content"><h2>{relatedServices.length ? 'Servicios relacionados con esta obra' : 'Explora las soluciones de IVCON'}</h2>{relatedServices.length ? <ServiceLinks slugs={relatedServices} /> : <><p>Conoce nuestros servicios y consulta cuál corresponde a tu proyecto.</p><ServiceLinks slugs={p.sector === 'Paisajismo' ? ['paisajismo'] : ['impermeabilizacion-de-techos', 'reparacion-de-filtraciones']} /></>}</div>
   <div class="project-cta"><div><h2>¿Tu obra necesita impermeabilización?</h2><p>Evaluemos la superficie y encontremos el sistema adecuado.</p></div><a class="button" href="/#contacto">Solicitar evaluación ↗</a></div></section>
-  <dialog id="lightbox"><button class="close-gallery" aria-label="Cerrar fotografía">✕</button><img src="" alt="" /><p></p></dialog>
+  {gallery.length > 0 && <dialog id="lightbox" aria-label="Fotografía del proyecto"><button class="close-gallery" aria-label="Cerrar fotografía">✕</button><img alt="" /><p></p></dialog>}
 </Layout>
 <script>
 const dialog=document.querySelector<HTMLDialogElement>('#lightbox')!;
 document.querySelectorAll<HTMLAnchorElement>('.gallery-link').forEach(link=>link.addEventListener('click',e=>{e.preventDefault();const img=dialog.querySelector('img')!;img.src=link.href;img.alt=link.dataset.caption || '';dialog.querySelector('p')!.textContent=img.alt;dialog.showModal();}));
-dialog.querySelector('button')?.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
+dialog?.querySelector('button')?.addEventListener('click',()=>dialog.close());dialog?.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
 </script>

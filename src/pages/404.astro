@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ServiceLinks from '../components/ServiceLinks.astro';
+---
+<Layout title="Página no encontrada | IVCON" description="La página que buscas no existe. Vuelve al inicio o encuentra los servicios de impermeabilización de IVCON." noindex={true} canonicalPath={null}>
+  <section class="project-hero"><div class="container"><div class="eyebrow">ERROR 404</div><h1>Esta página no existe</h1><p>El enlace puede haber cambiado o la dirección estar incompleta.</p><a class="button" href="/">Volver al inicio ↗</a></div></section>
+  <section class="section container"><h2>Encuentra la solución que buscas</h2><ServiceLinks slugs={['impermeabilizacion-de-techos', 'manto-asfaltico', 'reparacion-de-filtraciones']} /><a class="text-link dark" href="/proyectos/">Ver proyectos de IVCON ↗</a></section>
+</Layout>

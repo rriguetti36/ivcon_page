@@ -1,0 +1,7 @@
+---
+import { servicios, servicePath } from '../data/servicios';
+interface Props { slugs?: string[] }
+const { slugs = servicios.map(service => service.slug) } = Astro.props;
+const selected = slugs.flatMap(slug => servicios.filter(service => service.slug === slug));
+---
+<ul class="service-links">{selected.map(service => <li><a href={servicePath(service)}>{service.nombre} <span aria-hidden="true">↗</span></a></li>)}</ul>

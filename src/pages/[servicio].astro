@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ServiceLinks from '../components/ServiceLinks.astro';
+import { servicios, servicePath } from '../data/servicios';
+import { absoluteUrl, organizationId } from '../lib/seo';
+export function getStaticPaths() {
+  return servicios.map(service => ({ params: { servicio: service.slug }, props: { service } }));
+}
+const { service } = Astro.props;
+const breadcrumbs = [{ name: 'Inicio', path: '/' }, { name: 'Servicios', path: '/servicios/' }, { name: service.nombre, path: servicePath(service) }];
+const serviceSchema = {
+  '@type': 'Service', '@id': `${absoluteUrl(servicePath(service))}#service`,
+  name: service.nombre, serviceType: service.nombre, description: service.description,
+  url: absoluteUrl(servicePath(service)), provider: { '@id': organizationId },
+  areaServed: [{ '@type': 'Country', name: 'Perú' }, { '@type': 'City', name: 'Lima' }],
+};
+---
+<Layout title={service.title} description={service.description} breadcrumbs={breadcrumbs} schemas={[serviceSchema]}>
+  <section class="project-hero"><div class="container">
+    <Breadcrumbs items={breadcrumbs} /><div class="eyebrow">SOLUCIONES IVCON / LIMA Y PERÚ</div>
+    <h1>{service.h1}</h1><p class="intro-copy">{service.intro}</p>
+    <a class="button" href="/#contacto">Solicitar evaluación ↗</a>
+  </div></section>
+  <section class="section container service-content">
+    <h2>Beneficios de una solución evaluada</h2><ul class="benefits">{service.beneficios.map(text => <li>{text}</li>)}</ul>
+    <div class="case-grid"><article><h2>Aplicaciones</h2><p>{service.aplicaciones}</p></article><article><h2>Tipos de superficie</h2><p>{service.superficies}</p></article></div>
+    <h2>Cómo abordamos tu proyecto</h2><div class="steps">{service.proceso.map((step, i) => <article><span>{String(i + 1).padStart(2, '0')}</span><h3>{step.titulo}</h3><p>{step.texto}</p></article>)}</div>
+    <div class="related-content"><h2>Servicios relacionados</h2><ServiceLinks slugs={service.relacionados} /><p><a class="text-link dark" href="/proyectos/">Conoce los proyectos de IVCON ↗</a></p>{service.slug === 'paisajismo' && <p><a class="text-link dark" href="/proyectos/paisajismo-ivcon/">Ver la ficha de Paisajismo IVCON ↗</a></p>}</div>
+    <div class="project-cta"><div><h2>Cuéntanos qué necesita tu obra</h2><p>Comparte ubicación, fotografías y medidas aproximadas para iniciar la evaluación.</p></div><a class="button" href="/#contacto">Consultar con IVCON ↗</a></div>
+  </section>
+</Layout>

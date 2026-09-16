@@ -1,2 +1,6 @@
-import empresa from '../data/empresa.json';
-export const GET = () => new Response(empresa.dominio ? `User-agent: *\nAllow: /\nSitemap: ${empresa.dominio.replace(/\/$/,'')}/sitemap.xml\n` : 'User-agent: *\nDisallow: /\n', {headers:{'Content-Type':'text/plain; charset=utf-8'}});
+import { absoluteUrl, indexable } from '../lib/seo';
+// Permitir rastreo en demo para que el buscador pueda leer el noindex de las páginas.
+export const GET = () => new Response(
+  `User-agent: *\nAllow: /\n${indexable ? `\nSitemap: ${absoluteUrl('/sitemap.xml')}\n` : ''}`,
+  { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
+);

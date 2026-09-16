@@ -1,0 +1,15 @@
+---
+import proyectos from '../data/proyectos.json';
+import { photos } from '../lib/media';
+const { projects = proyectos, headingLevel = 3 } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+---
+<div class="project-grid">{projects.map((p, i) => {
+  const cover = photos(p.slug)[0];
+  return <a class="project-card" href={`/proyectos/${p.slug}/`}>
+    <div class={`project-image project-${i % 3}`}>
+      {cover ? <img src={cover} alt={p.imagenesAlt?.[decodeURIComponent(cover.split('/').pop()!)] || `${p.nombre}: obra de IVCON en ${p.ubicacion}`} loading="lazy" decoding="async" width="640" height="420" /> : <div class="project-drawing" aria-hidden="true"><span>{String(i + 1).padStart(2, '0')}</span><i></i></div>}
+      <span class="project-sector">{p.sector}</span><span class="project-arrow">↗</span>
+    </div><small>{p.ubicacion}</small><Heading>{p.nombre}</Heading>
+  </a>;
+})}</div>
