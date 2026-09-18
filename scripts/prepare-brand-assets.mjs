@@ -6,7 +6,7 @@ const source = 'public/imagenes/logo-recortado.png';
 await sharp(source).resize({ width: 720 }).webp({ quality: 88 }).toFile('public/imagenes/logo-web.webp');
 await sharp(source).flatten({ background: '#f7f7f2' }).resize(1200, 630, { fit: 'contain', background: '#f7f7f2' }).jpeg({ quality: 90 }).toFile('public/imagenes/ivcon-social.jpg');
 const isotipo = await sharp(source).extract({ left: 0, top: 0, width: 550, height: 550 }).png().toBuffer();
-for (const [size, name] of [[32, 'favicon-32.png'], [192, 'favicon-192.png'], [180, 'apple-touch-icon.png']]) {
+for (const [size, name] of [[32, 'favicon-32.png'], [48, 'favicon-48.png'], [192, 'favicon-192.png'], [180, 'apple-touch-icon.png']]) {
   await sharp(isotipo).resize(size, size).png().toFile(`public/${name}`);
 }
 // ICO con imagen PNG de 32 px, compatible con navegadores actuales.
